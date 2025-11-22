@@ -1,0 +1,124 @@
+.dashboard-page {
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  padding: 5px;
+  position: relative;
+  box-sizing: border-box;
+  background-color: #f0f2f5;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.dashboard-header {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.dashboard-header h1 {
+  margin: 0 0 10px 0;
+  color: #1f2937;
+  font-size: 1.8rem;
+}
+
+.dashboard-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+.dashboard-content {
+  width: 100%;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .dashboard-page {
+    padding: 15px;
+  }
+  
+  .dashboard-container {
+    padding: 0 15px;
+  }
+  
+  .dashboard-header {
+    padding: 25px;
+    margin-bottom: 25px;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .activity-section {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  .progress-section {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+/* Floating action button for mobile */
+.floating-action-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #20c997;
+  color: white;
+  border: none;
+  font-size: 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+@media (min-width: 768px) {
+  .floating-action-button {
+    display: none;
+  }
+}
+
+/* Ensure proper centering on all screen sizes */
+@media (max-width: 767px) {
+  .dashboard-page {
+    padding: 5px;
+  }
+  
+  .dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Fluid layout for all screen sizes */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
