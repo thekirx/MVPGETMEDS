@@ -163,6 +163,19 @@
   color: #1d4ed8;
 }
 
+.no-appointments {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #6b7280;
+}
+
+.no-appointments p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
 /* Responsive Design */
 @media (min-width: 768px) {
   .schedule-page {

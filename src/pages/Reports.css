@@ -65,6 +65,7 @@
 .table-cell {
   padding: 15px 20px;
   flex: 1;
+  color: #1f2937; /* Changed from default to ensure readability */
 }
 
 .table-body {
@@ -130,6 +131,7 @@
   .table-cell {
     padding: 10px 15px;
     border-bottom: 1px solid #e9ecef;
+    color: #1f2937; /* Ensure readability on mobile */
   }
   
   .table-cell:last-child {
