@@ -1,95 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './Tracking.css';
 
 const Tracking = () => {
-  const [position, setPosition] = useState(null);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser.");
-      return;
-    }
-
-    // High accuracy options for field force tracking
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 10000,
-      maximumAge: 0
-    };
-
-    // watchPosition updates automatically when the user moves
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => {
-        setPosition({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          accuracy: pos.coords.accuracy
-        });
-        setError(null);
-      },
-      (err) => {
-        setError(err.message);
-      },
-      options
-    );
-
-    // Clean up the watcher when the user leaves the page
-    return () => navigator.geolocation.clearWatch(watchId);
-  }, []);
+  const checkIns = [
+    { time: '10:00 AM', doctor: 'Dr. Cruz', location: 'Makati' },
+    { time: '11:30 AM', doctor: 'Mercury Drug', location: 'Taguig' },
+    { time: '02:00 PM', doctor: 'St. Lukes', location: 'Quezon City' }
+  ];
 
   return (
-    <div className="tracking-page">
-      <div className="tracking-container">
-        <header className="tracking-header">
-          <h1>Field Force Location Map</h1>
-          {position && (
-            <p style={{ color: '#20c997', fontWeight: '600' }}>
-              LIVE: {position.lat.toFixed(6)}, {position.lng.toFixed(6)} (±{Math.round(position.accuracy)}m)
-            </p>
-          )}
-        </header>
-        
-        <div className="tracking-content">
-          <div className="map-section">
-            <div className="map-placeholder" style={{ overflow: 'hidden', padding: 0 }}>
-              {error ? (
-                <div style={{ color: '#dc3545', textAlign: 'center', padding: '20px' }}>
-                  <strong>Location Error:</strong> {error}
-                </div>
-              ) : position ? (
-                <iframe
-                  width="100%"
-                  height="100%"
-                  frameBorder="0"
-                  src={`https://maps.google.com/maps?q=${position.lat},${position.lng}&z=15&output=embed`}
-                  title="Real-time location"
-                ></iframe>
-              ) : (
-                <div className="loading-location">
-                  <div className="status-indicator status-active"></div>
-                  Initializing GPS...
-                </div>
-              )}
+    <div className="page-container">
+      <div className="page-header">
+        <h1>Field Force Location Map</h1>
+        <p>Real-time GPS tracking of field representative activities</p>
+      </div>
+      
+      <div className="tracking-content">
+        <div className="map-placeholder">
+          <div className="map-container">
+            <h3>[Google Maps View - Live GPS]</h3>
+            <p>Interactive map showing real-time locations of all field representatives</p>
+            <div className="map-legend">
+              <div className="legend-item">
+                <span className="legend-color active"></span>
+                <span>Active Reps</span>
+              </div>
+              <div className="legend-item">
+                <span className="legend-color inactive"></span>
+                <span>Inactive Reps</span>
+              </div>
             </div>
           </div>
-          
-          <div className="checkins-section">
-            <h2>Recent Check-ins</h2>
-            <div className="checkin-list">
-              <div className="checkin-item">
-                <span className="time">10:00 AM</span>
-                <span className="details">Dr. Cruz (Makati)</span>
+        </div>
+        
+        <div className="checkins-section">
+          <h2>Recent Check-ins</h2>
+          <div className="checkins-list">
+            {checkIns.map((checkIn, index) => (
+              <div key={index} className="checkin-item">
+                <div className="checkin-time">{checkIn.time}</div>
+                <div className="checkin-details">
+                  <strong>{checkIn.doctor}</strong>
+                  <div className="checkin-location">{checkIn.location}</div>
+                </div>
+                <div className="status-indicator status-active"></div>
               </div>
-              <div className="checkin-item">
-                <span className="time">11:30 AM</span>
-                <span className="details">Mercury Drug (Taguig)</span>
-              </div>
-              <div className="checkin-item">
-                <span className="time">02:15 PM</span>
-                <span className="details">St. Luke's Hospital (BGC)</span>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

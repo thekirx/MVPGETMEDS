@@ -1,72 +1,106 @@
-.tracking-page {
+.page-container {
   width: 100%;
   min-height: calc(100vh - 70px);
   padding: 20px;
-  background-color: #f9fafb;
-  box-sizing: border-box;
+  background-color: #f0f2f5;
 }
 
-.tracking-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.tracking-header {
+.page-header {
   background-color: white;
   border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 25px;
+  margin-bottom: 25px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
-.tracking-header h1 {
-  margin: 0;
+.page-header h1 {
+  margin: 0 0 10px 0;
   color: #1f2937;
-  font-size: 1.8rem;
+  font-size: 2rem;
+}
+
+.page-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1.1rem;
 }
 
 .tracking-content {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 25px;
 }
 
-.map-section {
+.map-placeholder {
   background-color: white;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.map-placeholder {
+.map-container {
   height: 400px;
   background-color: #e5e7eb;
-  border-radius: 8px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.map-container h3 {
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+
+.map-container p {
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.map-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.legend-item {
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #6b7280;
-  font-size: 1.2rem;
-  font-weight: 500;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.legend-color.active {
+  background-color: #20c997;
+}
+
+.legend-color.inactive {
+  background-color: #9ca3af;
 }
 
 .checkins-section {
   background-color: white;
   border-radius: 8px;
-  padding: 20px;
+  padding: 25px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .checkins-section h2 {
   margin-top: 0;
   color: #1f2937;
-  font-size: 1.5rem;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid #e5e7eb;
   padding-bottom: 10px;
 }
 
-.checkin-list {
+.checkins-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -75,45 +109,77 @@
 .checkin-item {
   display: flex;
   align-items: center;
-  padding: 12px 15px;
+  gap: 15px;
+  padding: 15px;
+  background-color: #f9fafb;
   border-radius: 6px;
-  background-color: #f8f9fa;
-  transition: background-color 0.2s ease;
+  border-left: 4px solid #20c997;
 }
 
-.checkin-item:hover {
-  background-color: #e9ecef;
-}
-
-.time {
-  font-weight: 600;
+.checkin-time {
+  font-weight: bold;
   color: #1f2937;
-  min-width: 100px;
+  min-width: 80px;
 }
 
-.details {
-  color: #6b7280;
+.checkin-details {
   flex: 1;
 }
 
+.checkin-details strong {
+  display: block;
+  color: #1f2937;
+  margin-bottom: 3px;
+}
+
+.checkin-location {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.status-active {
+  background-color: #20c997;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
 @media (min-width: 768px) {
-  .tracking-page {
-    padding: 30px;
-  }
-  
-  .tracking-header h1 {
-    font-size: 2.2rem;
-  }
-  
   .tracking-content {
-    flex-direction: row;
+    grid-template-columns: 1fr 1fr;
   }
   
-  .map-section {
-    flex: 1;
+  .map-placeholder {
+    grid-column: 1 / span 2;
   }
   
   .checkins-section {
-    flex: 1;
+    grid-column: 1 / span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tracking-content {
+    grid-template-columns: 2fr 1fr;
+  }
+  
+  .map-placeholder {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  .checkins-section {
+    grid-column: 2;
+    grid-row: 1;
   }
 }

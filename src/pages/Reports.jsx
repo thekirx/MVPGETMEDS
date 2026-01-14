@@ -2,50 +2,86 @@ import React from 'react';
 import './Reports.css';
 
 const Reports = () => {
-  const handleCreateReport = () => {
-    alert('Create new report functionality would be implemented here');
-  };
-
-  // Sample report data
   const reports = [
-    { id: 1, date: '2025-11-20', doctor: 'Dr. Santos', type: 'Doctor Visit', status: 'Submitted' },
-    { id: 2, date: '2025-11-19', doctor: 'Mercury Drug', type: 'Pharmacy Call', status: 'Approved' },
-    { id: 3, date: '2025-11-18', doctor: 'Dr. Cruz', type: 'Sample Distribution', status: 'Pending' },
-    { id: 4, date: '2025-11-17', doctor: 'St. Luke\'s', type: 'Meeting', status: 'Submitted' },
-    { id: 5, date: '2025-11-16', doctor: 'MedExpress', type: 'Training', status: 'Approved' },
+    { date: '2025-01-14', doctor: 'Dr. Smith', type: 'Visit', status: 'Completed' },
+    { date: '2025-01-14', doctor: 'Mercury Drug', type: 'Call', status: 'Pending' },
+    { date: '2025-01-13', doctor: 'Dr. Johnson', type: 'Sample', status: 'Completed' },
+    { date: '2025-01-13', doctor: 'PharmaCorp', type: 'Meeting', status: 'Completed' },
+    { date: '2025-01-12', doctor: 'Dr. Brown', type: 'Visit', status: 'Completed' }
   ];
 
+  const getStatusClass = (status) => {
+    return status === 'Completed' ? 'status-completed' : 'status-pending';
+  };
+
+  const handleCreateReport = () => {
+    alert('Create new report functionality would open here');
+  };
+
   return (
-    <div className="reports-page">
-      <div className="reports-container">
-        <header className="reports-header">
-          <h1>Daily Report History</h1>
+    <div className="page-container">
+      <div className="page-header">
+        <div className="header-content">
+          <div>
+            <h1>Daily Report History</h1>
+            <p>View and manage your activity reports</p>
+          </div>
           <button className="create-report-btn" onClick={handleCreateReport}>
             + Create New Report
           </button>
-        </header>
-        
-        <div className="reports-table">
-          <div className="table-header">
-            <div className="table-cell">Date</div>
-            <div className="table-cell">Doctor/Pharmacy</div>
-            <div className="table-cell">Type</div>
-            <div className="table-cell">Status</div>
-          </div>
-          
-          <div className="table-body">
-            {reports.map(report => (
-              <div className="table-row" key={report.id}>
-                <div className="table-cell">{report.date}</div>
-                <div className="table-cell">{report.doctor}</div>
-                <div className="table-cell">{report.type}</div>
-                <div className="table-cell">
-                  <span className={`status-badge ${report.status.toLowerCase()}`}>
+        </div>
+      </div>
+      
+      <div className="reports-table-container">
+        <table className="reports-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Doctor/Pharmacy</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reports.map((report, index) => (
+              <tr key={index}>
+                <td>{report.date}</td>
+                <td>{report.doctor}</td>
+                <td>
+                  <span className={`type-badge type-${report.type.toLowerCase()}`}>
+                    {report.type}
+                  </span>
+                </td>
+                <td>
+                  <span className={`status-badge ${getStatusClass(report.status)}`}>
                     {report.status}
                   </span>
-                </div>
-              </div>
+                </td>
+                <td>
+                  <button className="action-btn view-btn">View</button>
+                  <button className="action-btn edit-btn">Edit</button>
+                </td>
+              </tr>
             ))}
+          </tbody>
+        </table>
+      </div>
+      
+      <div className="reports-summary">
+        <h3>Weekly Summary</h3>
+        <div className="summary-stats">
+          <div className="stat-card">
+            <h4>Total Reports</h4>
+            <p className="stat-number">24</p>
+          </div>
+          <div className="stat-card">
+            <h4>Completed</h4>
+            <p className="stat-number stat-completed">18</p>
+          </div>
+          <div className="stat-card">
+            <h4>Pending</h4>
+            <p className="stat-number stat-pending">6</p>
           </div>
         </div>
       </div>
