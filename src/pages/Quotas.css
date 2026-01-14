@@ -1,0 +1,213 @@
+.quotas-page {
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  padding: 20px;
+  background-color: #f0f2f5;
+  box-sizing: border-box;
+}
+
+.quotas-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.quotas-header {
+  background-color: white;
+  border-radius: 8px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.quotas-header h1 {
+  margin: 0 0 10px 0;
+  color: #1f2937;
+  font-size: 2rem;
+}
+
+.quotas-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+.quotas-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.quota-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quota-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.quota-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.quota-header h2 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.3rem;
+}
+
+.quota-stats {
+  background-color: #f0f2f5;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 12px;
+  background-color: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.progress-fill.low {
+  background-color: #dc2626;
+}
+
+.progress-fill.medium {
+  background-color: #f59e0b;
+}
+
+.progress-fill.high {
+  background-color: #16a34a;
+}
+
+.progress-percentage {
+  font-weight: 600;
+  color: #1f2937;
+  min-width: 40px;
+  text-align: right;
+}
+
+.quota-details {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.detail-value {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.status-badge.low {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.status-badge.medium {
+  background-color: #fef3c7;
+  color: #f59e0b;
+}
+
+.status-badge.high {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+@media (max-width: 768px) {
+  .quotas-page {
+    padding: 15px;
+  }
+  
+  .quotas-header {
+    padding: 20px;
+  }
+  
+  .quotas-header h1 {
+    font-size: 1.6rem;
+  }
+  
+  .quotas-content {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .quota-card {
+    padding: 20px;
+  }
+  
+  .quota-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .quota-header h2 {
+    font-size: 1.2rem;
+  }
+  
+  .progress-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .progress-percentage {
+    text-align: left;
+  }
+  
+  .quota-details {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .quotas-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

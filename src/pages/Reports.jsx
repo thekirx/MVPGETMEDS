@@ -32,40 +32,36 @@ const Reports = () => {
         </div>
       </div>
       
-      <div className="reports-table-container">
-        <table className="reports-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Doctor/Pharmacy</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reports.map((report, index) => (
-              <tr key={index}>
-                <td>{report.date}</td>
-                <td>{report.doctor}</td>
-                <td>
-                  <span className={`type-badge type-${report.type.toLowerCase()}`}>
-                    {report.type}
-                  </span>
-                </td>
-                <td>
-                  <span className={`status-badge ${getStatusClass(report.status)}`}>
-                    {report.status}
-                  </span>
-                </td>
-                <td>
-                  <button className="action-btn view-btn">View</button>
-                  <button className="action-btn edit-btn">Edit</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="reports-table-wrapper">
+        <div className="table-header">
+          <div className="table-cell">Date</div>
+          <div className="table-cell">Doctor/Pharmacy</div>
+          <div className="table-cell">Type</div>
+          <div className="table-cell">Status</div>
+          <div className="table-cell">Actions</div>
+        </div>
+        <div className="table-body">
+          {reports.map((report, index) => (
+            <div key={index} className="table-row">
+              <div className="table-cell">{report.date}</div>
+              <div className="table-cell">{report.doctor}</div>
+              <div className="table-cell">
+                <span className={`type-badge type-${report.type.toLowerCase()}`}>
+                  {report.type}
+                </span>
+              </div>
+              <div className="table-cell">
+                <span className={`status-badge ${getStatusClass(report.status)}`}>
+                  {report.status}
+                </span>
+              </div>
+              <div className="table-cell">
+                <button className="action-btn view-btn">View</button>
+                <button className="action-btn edit-btn">Edit</button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       
       <div className="reports-summary">
