@@ -5,12 +5,11 @@ const DailyActivityLogger = ({ onAddActivity }) => {
   const [details, setDetails] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [location, setLocation] = useState('');
-  const [photo, setPhoto] = useState(null);
+  const [isLocating, setIsLocating] = useState(false);
   const [photoPreview, setPhotoPreview] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     if (!activityType) {
       alert('Please select an activity type');
       return;
@@ -25,41 +24,47 @@ const DailyActivityLogger = ({ onAddActivity }) => {
     };
     
     onAddActivity(newActivity);
-    
-    // Reset form
     setActivityType('');
     setDetails('');
     setQuantity(1);
     setLocation('');
-    setPhoto(null);
     setPhotoPreview(null);
   };
 
   const getLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setLocation(`Lat: ${latitude.toFixed(4)}, Lon: ${longitude.toFixed(4)}`);
-        },
-        (error) => {
-          alert('Unable to retrieve your location. Please enter manually.');
-          console.error('Geolocation error:', error);
-        }
-      );
-    } else {
-      alert('Geolocation is not supported by your browser. Please enter location manually.');
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
     }
+
+    setIsLocating(true);
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 8000,
+      maximumAge: 0
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        // Sets coordinates directly into the form field
+        setLocation(`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`);
+        setIsLocating(false);
+      },
+      (error) => {
+        setIsLocating(false);
+        alert(`Error (${error.code}): ${error.message}. Please ensure GPS is on.`);
+      },
+      options
+    );
   };
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setPhoto(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPhotoPreview(reader.result);
-      };
+      reader.onloadend = () => setPhotoPreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
@@ -81,8 +86,6 @@ const DailyActivityLogger = ({ onAddActivity }) => {
             <option value="pharmacy_call">Pharmacy Call</option>
             <option value="sample_distribution">Sample Distribution</option>
             <option value="meeting">Meeting</option>
-            <option value="training">Training Session</option>
-            <option value="other">Other Activity</option>
           </select>
         </div>
         
@@ -97,42 +100,30 @@ const DailyActivityLogger = ({ onAddActivity }) => {
           />
         </div>
         
-        {(activityType === 'sample_distribution' || activityType === 'other') && (
-          <div className="form-group">
-            <label htmlFor="quantity">Quantity</label>
-            <input 
-              type="number" 
-              id="quantity" 
-              value={quantity} 
-              onChange={(e) => setQuantity(e.target.value)}
-              min="1"
-            />
-          </div>
-        )}
-        
         <div className="form-group">
-          <label htmlFor="location">Location</label>
+          <label htmlFor="location">Location (Coordinates)</label>
           <input 
             type="text" 
             id="location" 
             value={location} 
             onChange={(e) => setLocation(e.target.value)}
-            placeholder="Where did this activity take place?"
+            placeholder="Auto-populated with GPS..."
           />
           <div className="button-group">
             <button 
               type="button" 
               className="location-button"
               onClick={getLocation}
+              disabled={isLocating}
             >
-              📍 Get Location
+              {isLocating ? '⌛ Locating...' : '📍 Get My GPS Location'}
             </button>
             <button 
               type="button" 
               className="camera-button"
               onClick={() => document.getElementById('photo').click()}
             >
-              📷 Photo
+              📷 Add Photo
             </button>
           </div>
           <input 
@@ -143,18 +134,10 @@ const DailyActivityLogger = ({ onAddActivity }) => {
             onChange={handlePhotoChange}
             style={{display: 'none'}}
           />
-          {photoPreview && (
-            <img 
-              src={photoPreview} 
-              alt="Preview" 
-              className="photo-preview"
-            />
-          )}
+          {photoPreview && <img src={photoPreview} alt="Preview" className="photo-preview" />}
         </div>
         
-        <button type="submit" className="btn btn-block">
-          Log Activity
-        </button>
+        <button type="submit" className="btn btn-block">Log Activity</button>
       </form>
     </div>
   );
