@@ -137,22 +137,7 @@
   font-size: 0.9rem;
 }
 
-.status-indicator {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-}
 
-.status-active {
-  background-color: #20c997;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-}
 
 @media (min-width: 768px) {
   .tracking-content {

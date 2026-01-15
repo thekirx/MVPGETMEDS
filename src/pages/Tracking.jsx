@@ -12,24 +12,14 @@ const Tracking = () => {
     <div className="page-container">
       <div className="page-header">
         <h1>Field Force Location Map</h1>
-        <p>Real-time GPS tracking of field representative activities</p>
+        <p>GPS tracking of field representative activities</p>
       </div>
       
       <div className="tracking-content">
         <div className="map-placeholder">
           <div className="map-container">
-            <h3>[Google Maps View - Live GPS]</h3>
-            <p>Interactive map showing real-time locations of all field representatives</p>
-            <div className="map-legend">
-              <div className="legend-item">
-                <span className="legend-color active"></span>
-                <span>Active Reps</span>
-              </div>
-              <div className="legend-item">
-                <span className="legend-color inactive"></span>
-                <span>Inactive Reps</span>
-              </div>
-            </div>
+            <h3>[Map View]</h3>
+            <p>Map showing locations of field representatives</p>
           </div>
         </div>
         
@@ -43,7 +33,6 @@ const Tracking = () => {
                   <strong>{checkIn.doctor}</strong>
                   <div className="checkin-location">{checkIn.location}</div>
                 </div>
-                <div className="status-indicator status-active"></div>
               </div>
             ))}
           </div>

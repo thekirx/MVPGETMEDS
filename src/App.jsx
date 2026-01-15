@@ -9,6 +9,8 @@ import Support from './pages/Support';
 import Tracking from './pages/Tracking';
 import Reports from './pages/Reports';
 import Quotas from './pages/Quotas';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path="/tracking" element={<Tracking />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/quotas" element={<Quotas />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );

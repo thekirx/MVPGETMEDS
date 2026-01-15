@@ -4,6 +4,7 @@ import DailyActivityLogger from '../components/DailyActivityLogger';
 import ProgressReporter from '../components/ProgressReporter';
 import RealTimeStatus from '../components/RealTimeStatus';
 
+
 const Dashboard = () => {
   const [activities, setActivities] = useState([
     {
@@ -36,15 +37,7 @@ const Dashboard = () => {
     { id: 3, name: 'Sample Distribution', target: 20, completed: 12 }
   ]);
 
-  // Simulate real-time sync by updating status every 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // In a real app, this would come from a WebSocket or API
-      console.log('Syncing with server...');
-    }, 5000);
 
-    return () => clearInterval(interval);
-  }, []);
 
   const addActivity = (activity) => {
     const newActivity = {
@@ -87,6 +80,7 @@ const Dashboard = () => {
         <div className="dashboard-content">
           <div className="dashboard-grid">
             <RealTimeStatus activities={activities} />
+            
             
             <div className="activity-section">
               <DailyActivityLogger onAddActivity={addActivity} />

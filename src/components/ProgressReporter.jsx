@@ -14,7 +14,7 @@ const ProgressReporter = ({ targets }) => {
   return (
     <div className="card">
       <h3>Progress Reporting</h3>
-      <p style={{ color: '#6b7280' }}>Track your targets and quotas in real-time</p>
+      <p style={{ color: '#6b7280' }}>Track your targets and quotas</p>
       
       <div style={{ marginTop: '20px' }}>
         {targets.map((target) => {
@@ -43,9 +43,9 @@ const ProgressReporter = ({ targets }) => {
       <div style={{ marginTop: '30px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '4px' }}>
         <h4 style={{ marginTop: 0, color: '#1f2937' }}>Performance Summary</h4>
         <ul style={{ textAlign: 'left', paddingLeft: '20px', color: '#1f2937' }}>
-          <li>All activities are synced in real-time to management dashboard</li>
+          <li>All activities are synced to management dashboard</li>
           <li>Your progress updates automatically as you log activities</li>
-          <li>Management can view your live status at any moment</li>
+          <li>Management can view your status at any moment</li>
         </ul>
       </div>
     </div>

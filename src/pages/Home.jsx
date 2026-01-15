@@ -32,7 +32,7 @@ const Home = () => {
       {/* Hero Banner Section */}
       <section className="hero-banner">
         <div className="hero-content">
-          <h1>Empowering Field Sales with Real-Time Data</h1>
+          <h1>Empowering Field Sales with Data</h1>
           <p>Seamless reporting, tracking, and quota achievement for field representatives.</p>
           <div className="hero-buttons">
             <button className="btn-primary" onClick={handleDashboardClick}>
@@ -57,7 +57,7 @@ const Home = () => {
                   <path d="M12 11.5C13.3807 11.5 14.5 10.3807 14.5 9C14.5 7.61929 13.3807 6.5 12 6.5C10.6193 6.5 9.5 7.61929 9.5 9C9.5 10.3807 10.6193 11.5 12 11.5Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <h3>Real-Time Tracking</h3>
+              <h3>GPS Tracking</h3>
               <p>Log your location and visits instantly with GPS precision.</p>
             </div>
 
@@ -81,7 +81,7 @@ const Home = () => {
                 </svg>
               </div>
               <h3>Quota Management</h3>
-              <p>Track your sales targets and sample distribution live.</p>
+              <p>Track your sales targets and sample distribution.</p>
             </div>
           </div>
         </div>

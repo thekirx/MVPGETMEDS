@@ -7,7 +7,6 @@ const RealTimeStatus = ({ activities }) => {
   return (
     <div className="card">
       <h3>
-        <span className="status-indicator status-active"></span>
         Live Activity Feed
       </h3>
       <div className="activity-feed">

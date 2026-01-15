@@ -26,7 +26,7 @@ const Quotas = () => {
       <div className="quotas-container">
         <header className="quotas-header">
           <h1>Sales Performance Analytics</h1>
-          <p>Track your sales targets and achievements in real-time</p>
+          <p>Track your sales targets and achievements</p>
         </header>
         
         <div className="quotas-content">
