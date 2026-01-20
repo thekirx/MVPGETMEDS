@@ -96,6 +96,23 @@
   background-color: #1baa80;
 }
 
+.logout-button {
+  background-color: #dc3545; /* Red for logout */
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.logout-button:hover {
+  background-color: #bd2130;
+}
+
 .hamburger {
   display: none;
   flex-direction: column;
@@ -170,6 +187,18 @@
   text-decoration: none;
   padding: 10px;
   border-radius: 4px;
+}
+
+.mobile-logout {
+  flex: 1;
+  text-align: center;
+  background-color: #dc3545; /* Red for logout */
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

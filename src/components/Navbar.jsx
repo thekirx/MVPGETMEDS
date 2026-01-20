@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import LogoIcon from './LogoIcon';
 import './Navbar.css';
 
 const Navbar = () => {
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -60,12 +63,24 @@ const Navbar = () => {
 
         {/* Right: Action Area */}
         <div className="navbar-actions">
-          <Link to="/login" className="login-link" onClick={closeMenu}>
-            Login
-          </Link>
-          <Link to="/register" className="register-button" onClick={closeMenu}>
-            Register
-          </Link>
+          {isLoggedIn ? (
+            <button className="logout-button" onClick={() => {
+              logout();
+              closeMenu();
+              navigate('/');
+            }}>
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login" className="login-link" onClick={closeMenu}>
+                Login
+              </Link>
+              <Link to="/register" className="register-button" onClick={closeMenu}>
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger Menu */}
@@ -111,12 +126,24 @@ const Navbar = () => {
           Support
         </Link>
         <div className="mobile-actions">
-          <Link to="/login" className="mobile-login" onClick={closeMenu}>
-            Login
-          </Link>
-          <Link to="/register" className="mobile-register" onClick={closeMenu}>
-            Register
-          </Link>
+          {isLoggedIn ? (
+            <button className="mobile-logout" onClick={() => {
+              logout();
+              closeMenu();
+              navigate('/');
+            }}>
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login" className="mobile-login" onClick={closeMenu}>
+                Login
+              </Link>
+              <Link to="/register" className="mobile-register" onClick={closeMenu}>
+                Register
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
