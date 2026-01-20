@@ -11,6 +11,7 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -22,22 +23,26 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg('');
     
-    // Simple validation
     if (!formData.userIdOrEmail || !formData.password) {
       alert('Please fill in all fields');
       return;
     }
 
-    // Show success message
-    setShowAlert(true);
-    // Simulate login with dummy user data
-    login({ id: 1, userIdOrEmail: formData.userIdOrEmail });
-    setTimeout(() => {
-      setShowAlert(false);
+    try {
+      // Call Supabase login via Context
+      await login(formData.userIdOrEmail, formData.password);
+      
+      setShowAlert(true);
       // Navigate to dashboard after successful login
-      navigate('/dashboard');
-    }, 2000);
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrorMsg('Login failed: ' + error.message);
+    }
   };
 
   return (
@@ -49,15 +54,21 @@ const Login = () => {
             Login successful! Redirecting to dashboard...
           </div>
         )}
+        {errorMsg && (
+          <div className="alert" style={{backgroundColor: '#f8d7da', color: '#721c24', border: '1px solid #f5c6cb'}}>
+            {errorMsg}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label htmlFor="userIdOrEmail">User ID or Email</label>
+            <label htmlFor="userIdOrEmail">Email Address</label>
             <input
-              type="text"
+              type="email"
               id="userIdOrEmail"
               name="userIdOrEmail"
               value={formData.userIdOrEmail}
               onChange={handleChange}
+              placeholder="Enter your email"
               required
             />
           </div>

@@ -1,39 +1,64 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../supabaseClient';
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
+  return useContext(AuthContext);
 };
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const login = (userData) => {
-    setIsLoggedIn(true);
-    setUser(userData);
+  useEffect(() => {
+    // 1. Check for an active session immediately when the app loads
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+      setIsLoggedIn(!!session?.user);
+      setLoading(false);
+    };
+    checkSession();
+
+    // 2. Set up a listener for login/logout events (Real-time auth updates)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setIsLoggedIn(!!session?.user);
+      setLoading(false);
+    });
+
+    // Cleanup listener when component unmounts
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Login function
+  const login = async (email, password) => {
+    const { error } = await supabase.auth.signInWithPassword({ 
+      email, 
+      password 
+    });
+    if (error) throw error;
   };
 
-  const logout = () => {
-    setIsLoggedIn(false);
-    setUser(null);
+  // Logout function
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   };
 
   const value = {
     isLoggedIn,
     user,
     login,
-    logout
+    logout,
+    loading
   };
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

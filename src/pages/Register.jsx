@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
 import './Register.css';
 
 const Register = () => {
@@ -25,7 +26,6 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Simple validation
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.password) {
       alert('Please fill in all required fields');
       return;
@@ -36,13 +36,42 @@ const Register = () => {
       return;
     }
 
-    // Show success message
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-      // Navigate to login after successful registration
-      navigate('/login');
-    }, 2000);
+    try {
+      // 1. Sign up the user in Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) throw error;
+
+      // 2. Insert extra details into the 'profiles' table
+      if (data.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert([{
+            id: data.user.id,
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            email: formData.email
+          }]);
+          
+        if (profileError) {
+          console.error('Error creating profile:', profileError);
+          // Continue anyway since auth was successful
+        }
+      }
+
+      // Show success message
+      setShowAlert(true);
+      setTimeout(() => {
+        setShowAlert(false);
+        navigate('/login');
+      }, 2000);
+
+    } catch (error) {
+      alert('Registration failed: ' + error.message);
+    }
   };
 
   return (
@@ -51,7 +80,7 @@ const Register = () => {
         <h2>Create New Account</h2>
         {showAlert && (
           <div className="alert alert-success">
-            Registration successful! Redirecting to login...
+            Registration successful! Please login.
           </div>
         )}
         <form onSubmit={handleSubmit} className="auth-form">

@@ -3,69 +3,95 @@ import './Dashboard.css';
 import DailyActivityLogger from '../components/DailyActivityLogger';
 import ProgressReporter from '../components/ProgressReporter';
 import RealTimeStatus from '../components/RealTimeStatus';
-
+import { supabase } from '../supabaseClient';
+import { useAuth } from '../context/AuthContext';
 
 const Dashboard = () => {
-  const [activities, setActivities] = useState([
-    {
-      id: 1,
-      type: 'doctor_visit',
-      details: 'Visited Dr. Smith at Central Hospital to discuss new product line',
-      location: 'Central Hospital, Room 204',
-      timestamp: new Date(Date.now() - 3600000).toLocaleString() // 1 hour ago
-    },
-    {
-      id: 2,
-      type: 'pharmacy_call',
-      details: 'Called MedExpress Pharmacy to check stock levels',
-      location: 'MedExpress Pharmacy, Main St',
-      timestamp: new Date(Date.now() - 7200000).toLocaleString() // 2 hours ago
-    },
-    {
-      id: 3,
-      type: 'sample_distribution',
-      details: 'Distributed 5 samples of new medication to Dr. Johnson',
-      location: 'Johnson Clinic',
-      quantity: 5,
-      timestamp: new Date(Date.now() - 10800000).toLocaleString() // 3 hours ago
-    }
-  ]);
+  const { user } = useAuth();
+  const [activities, setActivities] = useState([]);
   
+  // Local targets state (Future: move this to 'quotas' table in DB)
   const [targets, setTargets] = useState([
     { id: 1, name: 'Doctor Visits', target: 10, completed: 4 },
     { id: 2, name: 'Pharmacy Calls', target: 15, completed: 8 },
     { id: 3, name: 'Sample Distribution', target: 20, completed: 12 }
   ]);
 
+  // Fetch activities when component mounts or user changes
+  useEffect(() => {
+    if (user) {
+      fetchActivities();
+    }
+  }, [user]);
 
+  const fetchActivities = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('activities')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      // Transform DB data to match UI expectations if needed
+      // (Supabase returns 'created_at', your UI might expect 'timestamp')
+      const formattedData = data.map(item => ({
+        ...item,
+        timestamp: new Date(item.created_at).toLocaleString()
+      }));
 
-  const addActivity = (activity) => {
-    const newActivity = {
-      ...activity,
-      id: Date.now(),
-      timestamp: new Date().toLocaleString()
-    };
-    setActivities(prev => [newActivity, ...prev]);
-    
-    // Update targets if this activity contributes to a target
-    if (activity.type === 'doctor_visit') {
-      setTargets(prev => prev.map(target => 
-        target.name === 'Doctor Visits' 
-          ? {...target, completed: target.completed + 1} 
-          : target
-      ));
-    } else if (activity.type === 'pharmacy_call') {
-      setTargets(prev => prev.map(target => 
-        target.name === 'Pharmacy Calls' 
-          ? {...target, completed: target.completed + 1} 
-          : target
-      ));
-    } else if (activity.type === 'sample_distribution') {
-      setTargets(prev => prev.map(target => 
-        target.name === 'Sample Distribution' 
-          ? {...target, completed: target.completed + (activity.quantity || 1)} 
-          : target
-      ));
+      if (data) setActivities(formattedData);
+    } catch (error) {
+      console.error('Error fetching activities:', error.message);
+    }
+  };
+
+  const addActivity = async (activity) => {
+    try {
+      if (!user) {
+        alert("You must be logged in to add activities.");
+        return;
+      }
+
+      // 1. Insert into Supabase 'activities' table
+      const { data, error } = await supabase
+        .from('activities')
+        .insert([{
+          user_id: user.id,
+          type: activity.type,
+          details: activity.details,
+          quantity: activity.quantity || 1,
+          location: activity.location
+        }])
+        .select();
+
+      if (error) throw error;
+
+      // 2. Update local state immediately (Optimistic UI update)
+      if (data && data[0]) {
+        const newActivity = {
+          ...data[0],
+          timestamp: new Date(data[0].created_at).toLocaleString()
+        };
+        setActivities(prev => [newActivity, ...prev]);
+        
+        // 3. Update Targets Logic (Local state only for now)
+        if (activity.type === 'doctor_visit') {
+          setTargets(prev => prev.map(target => 
+            target.name === 'Doctor Visits' ? {...target, completed: target.completed + 1} : target
+          ));
+        } else if (activity.type === 'pharmacy_call') {
+          setTargets(prev => prev.map(target => 
+            target.name === 'Pharmacy Calls' ? {...target, completed: target.completed + 1} : target
+          ));
+        } else if (activity.type === 'sample_distribution') {
+          setTargets(prev => prev.map(target => 
+            target.name === 'Sample Distribution' ? {...target, completed: target.completed + (activity.quantity || 1)} : target
+          ));
+        }
+      }
+    } catch (error) {
+      alert('Error saving activity: ' + error.message);
     }
   };
 
@@ -79,8 +105,8 @@ const Dashboard = () => {
         
         <div className="dashboard-content">
           <div className="dashboard-grid">
+            {/* RealTimeStatus now receives data fetched from Supabase */}
             <RealTimeStatus activities={activities} />
-            
             
             <div className="activity-section">
               <DailyActivityLogger onAddActivity={addActivity} />
